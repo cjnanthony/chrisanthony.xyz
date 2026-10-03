@@ -1,0 +1,25 @@
+---
+// One tile per day, oldest first, filling 3 rows column by column. A day with
+// posts takes the folder color of that day's most recent post.
+import { getSite, today } from '../lib/site';
+const { posts } = await getSite();
+
+const DAYS = 138;
+const PHONE_DAYS = 60;
+const end = new Date(`${today()}T00:00:00Z`);
+const colorByDay = new Map<string, string>();
+for (const p of posts) if (!colorByDay.has(p.date)) colorByDay.set(p.date, p.folder.color); // posts are newest first
+const days = Array.from({ length: DAYS }, (_, i) => {
+  const d = new Date(end);
+  d.setUTCDate(d.getUTCDate() - (DAYS - 1 - i));
+  return colorByDay.get(d.toISOString().slice(0, 10));
+});
+const tiles = (list: (string | undefined)[]) =>
+  list.map((color, i) => ({ color, cls: color ? 'tile' : i % 2 ? 'tile empty alt' : 'tile empty' }));
+---
+<div class="banner l" aria-hidden="true">
+  {tiles(days).map((t) => <div class={t.cls} style={t.color && `background:${t.color}`} />)}
+</div>
+<div class="banner s" aria-hidden="true">
+  {tiles(days.slice(-PHONE_DAYS)).map((t) => <div class={t.cls} style={t.color && `background:${t.color}`} />)}
+</div>

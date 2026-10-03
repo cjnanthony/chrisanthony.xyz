@@ -1,0 +1,80 @@
+---
+import Base from '../../layouts/Base.astro';
+import Panel from '../../components/Panel.astro';
+import { render } from 'astro:content';
+import { getSite, type Post } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const { posts } = await getSite();
+  return posts.map((post) => {
+    const [, section, slug] = post.url.split('/');
+    return { params: { section, post: slug }, props: { post } };
+  });
+}
+const { post } = Astro.props as { post: Post };
+const { posts, backlinksOf } = await getSite();
+const { Content, headings } = await render(post.entry);
+const outline = headings.filter((h) => h.depth === 2);
+const linkedFrom = backlinksOf(post);
+const more = posts.filter((p) => p.folder === post.folder && p !== post).slice(0, 3);
+---
+<Base title={post.title} current={post.folder.name}>
+  <div class="dash">
+    <Panel title={post.folder.name} color={post.folder.color}>
+      <div class="post-head">
+        <h1>{post.linkUrl ? <a href={post.linkUrl}>{post.title}</a> : post.title}</h1>
+        <span class="meta">
+          {post.date}
+          {post.author && <> · by {post.author}</>}
+          {post.domain && <> · <a href={post.linkUrl}>{post.domain}</a></>}
+        </span>
+      </div>
+      <div class="prose">
+        <Content />
+        {post.linkUrl && post.domain && (
+          <p><a class="read-more" href={post.linkUrl}>Read the article on {post.domain} »</a></p>
+        )}
+      </div>
+      <div class="post-end">
+        {linkedFrom.length > 0 && (
+          <p class="bl-m">
+            <span class="label">Linked from</span>{' '}
+            {linkedFrom.map((p, i) => <>{i > 0 && ', '}<a href={p.url}>{p.title}</a></>)}
+          </p>
+        )}
+        <nav aria-label="Back"><a href="/">« Back to home</a></nav>
+      </div>
+    </Panel>
+    {(outline.length > 0 || linkedFrom.length > 0 || more.length > 0) && (
+      <div class="sidep sticky">
+        <Panel title="Index">
+          {outline.length > 0 && (
+            <div class="index-group">
+              <span class="label">Outline</span>
+              {outline.map((h) => <a href={`#${h.slug}`}>{h.text}</a>)}
+            </div>
+          )}
+          {linkedFrom.length > 0 && (
+            <div class="index-group">
+              <span class="label">Linked from</span>
+              {linkedFrom.map((p) => <a href={p.url}>{p.title}</a>)}
+            </div>
+          )}
+          {more.length > 0 && (
+            <div class="index-group">
+              <span class="label">More in {post.folder.name}</span>
+              {more.map((p) => <a href={p.url}>{p.title}</a>)}
+            </div>
+          )}
+        </Panel>
+      </div>
+    )}
+  </div>
+  <script>
+    // Tapping an image opens it full size.
+    document.querySelectorAll<HTMLAnchorElement>('.prose a.zoom').forEach((a) => {
+      const img = a.querySelector('img');
+      if (img) a.href = img.currentSrc || img.src;
+    });
+  </script>
+</Base>

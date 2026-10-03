@@ -1,0 +1,9 @@
+---
+import Elsewhere from './Elsewhere.astro';
+import { getSite } from '../lib/site';
+const { lastUpdated } = await getSite();
+---
+<section class="mfoot">
+  <span><span class="label">Updated</span> {lastUpdated}</span>
+  <Elsewhere />
+</section>

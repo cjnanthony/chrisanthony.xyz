@@ -1,0 +1,23 @@
+---
+// ABOUT sidebar for Home and section pages, plus the compact panel that
+// replaces it on phones.
+import Panel from './Panel.astro';
+import Elsewhere from './Elsewhere.astro';
+import { getSite } from '../lib/site';
+import { render } from 'astro:content';
+const { sidebar, lastUpdated } = await getSite();
+const Blurb = sidebar ? (await render(sidebar)).Content : null;
+---
+<div class="sidep">
+  <Panel title="About">
+    <div class="side">
+      <div><span class="blurb">{Blurb && <Blurb />} <a href="/about/">More »</a></span></div>
+      <div><span class="label">Last updated</span><span>{lastUpdated}</span></div>
+      <div><span class="label">Elsewhere</span><Elsewhere /></div>
+    </div>
+  </Panel>
+</div>
+<style>
+  /* The blurb is Markdown; keep its paragraph inline with "More »". */
+  .blurb :global(p) { display: inline; margin: 0; }
+</style>

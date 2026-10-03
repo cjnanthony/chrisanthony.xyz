@@ -1,0 +1,5 @@
+---
+import { getSite } from '../lib/site';
+const { elsewhere } = await getSite();
+---
+<span>{elsewhere.map((l, i) => <>{i > 0 && ' · '}<a href={l.url}>{l.label}</a></>)}</span>

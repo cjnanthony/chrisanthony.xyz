@@ -1,0 +1,20 @@
+---
+// Every post, newest first. Reached from "Older posts »" on the home page.
+import Base from '../layouts/Base.astro';
+import Panel from '../components/Panel.astro';
+import PostRow from '../components/PostRow.astro';
+import AboutSidebar from '../components/AboutSidebar.astro';
+import MobileFoot from '../components/MobileFoot.astro';
+import { getSite } from '../lib/site';
+const { posts } = await getSite();
+---
+<Base title="Archive">
+  <div class="dash">
+    <Panel title="Archive">
+      <span class="meta">{posts.length} posts</span>
+      <div class="rows">{posts.map((post) => <PostRow post={post} />)}</div>
+    </Panel>
+    <AboutSidebar />
+  </div>
+  <MobileFoot />
+</Base>

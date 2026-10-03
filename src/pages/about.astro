@@ -1,0 +1,40 @@
+---
+import Base from '../layouts/Base.astro';
+import Panel from '../components/Panel.astro';
+import Elsewhere from '../components/Elsewhere.astro';
+import { render } from 'astro:content';
+import { getSite } from '../lib/site';
+const { about, lastUpdated } = await getSite();
+const Bio = about ? (await render(about)).Content : null;
+const { work = [], education = [], linkedin, reading = [], colophon } = about?.data ?? {};
+---
+<Base title="About" current="About">
+  <Panel title="About">
+    <div class="reading">
+      <h1 class="page-title">About</h1>
+      {Bio && <div class="prose"><Bio /></div>}
+      {(work.length > 0 || education.length > 0) && (
+        <div class="about-block cv">
+          {work.length > 0 && <h3 class="label">Work</h3>}
+          {work.map((w) => (
+            <div class="cv-row"><span><strong>{w.org}</strong>{w.role && <> · {w.role}</>}</span><span class="meta">{w.years}</span></div>
+          ))}
+          {education.length > 0 && <div style="padding-top: 6px"><h3 class="label">Education</h3></div>}
+          {education.map((e) => (
+            <div class="cv-row"><span><strong>{e.org}</strong>{e.detail && <> · {e.detail}</>}</span><span class="meta">{e.years}</span></div>
+          ))}
+          {linkedin && <a class="meta" href={linkedin}>Full history on LinkedIn »</a>}
+        </div>
+      )}
+      {reading.length > 0 && (
+        <div class="about-block">
+          <h3 class="label">I read</h3>
+          <span>{reading.map((r, i) => <>{i > 0 && ', '}<a href={r.url}>{r.name}</a></>)}</span>
+        </div>
+      )}
+      <div class="about-block"><h3 class="label">Elsewhere</h3><Elsewhere /></div>
+      <div class="about-block"><h3 class="label">Last updated</h3><span>{lastUpdated}</span></div>
+      {colophon && <div class="about-block"><h3 class="label">Colophon</h3><span>{colophon}</span></div>}
+    </div>
+  </Panel>
+</Base>

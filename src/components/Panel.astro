@@ -1,0 +1,10 @@
+---
+interface Props { title: string; color?: string; class?: string }
+const { title, color, class: cls } = Astro.props;
+---
+<section class:list={['panel', cls]}>
+  <div class="panel-title">
+    <h2>{color ? <span><span class="sq" aria-hidden="true" style={`background:${color}`} />{title}</span> : title}</h2>
+  </div>
+  <slot />
+</section>

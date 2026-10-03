@@ -1,0 +1,28 @@
+---
+import Base from '../../layouts/Base.astro';
+import Panel from '../../components/Panel.astro';
+import AboutSidebar from '../../components/AboutSidebar.astro';
+import MobileFoot from '../../components/MobileFoot.astro';
+import { getSite, type Folder } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const { folders } = await getSite();
+  return folders.map((folder) => ({ params: { section: folder.url.slice(1, -1) }, props: { folder } }));
+}
+const { folder } = Astro.props as { folder: Folder };
+const posts = (await getSite()).posts.filter((p) => p.folder === folder);
+---
+<Base title={folder.name} current={folder.name}>
+  <div class="dash">
+    <Panel title={folder.name} color={folder.color}>
+      <span class="meta">{posts.length} {posts.length === 1 ? 'post' : 'posts'}</span>
+      <div class="flat">
+        {posts.map((post) => (
+          <a class="row" href={post.url}><span>{post.title}</span><span class="meta">{post.date}</span></a>
+        ))}
+      </div>
+    </Panel>
+    <AboutSidebar />
+  </div>
+  <MobileFoot />
+</Base>

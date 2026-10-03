@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import Panel from '../components/Panel.astro';
+import Banner from '../components/Banner.astro';
+import PostRow from '../components/PostRow.astro';
+import AboutSidebar from '../components/AboutSidebar.astro';
+import MobileFoot from '../components/MobileFoot.astro';
+import { getSite, LATEST_COUNT } from '../lib/site';
+const { pinned, latest } = await getSite();
+---
+<Base>
+  <div class="dash">
+    <Panel title="Posts">
+      <Banner />
+      {pinned.length > 0 && (
+        <div class="group divided">
+          <h3 class="label">Pinned</h3>
+          {pinned.map((post) => <PostRow post={post} />)}
+        </div>
+      )}
+      <div class="group">
+        <h3 class="label">Latest</h3>
+        <div class="rows">{latest.slice(0, LATEST_COUNT).map((post) => <PostRow post={post} />)}</div>
+      </div>
+      {latest.length > LATEST_COUNT && <a class="older meta" href="/archive/">Older posts »</a>}
+    </Panel>
+    <AboutSidebar />
+  </div>
+  <MobileFoot />
+</Base>

@@ -1,0 +1,45 @@
+---
+import '@fontsource/young-serif/400.css';
+import '@fontsource/silkscreen/400.css';
+import '../styles/global.css';
+import { getSite } from '../lib/site';
+
+interface Props {
+  title?: string;
+  current?: string; // 'About' or a folder name; underlined in the nav
+}
+const { title, current } = Astro.props;
+const { tagline, folders } = await getSite();
+const pageTitle = title ? `${title} · Chris Anthony` : 'Chris Anthony';
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{pageTitle}</title>
+  {tagline && <meta name="description" content={tagline} />}
+  <link rel="alternate" type="application/rss+xml" title="Chris Anthony" href="/rss.xml" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+</head>
+<body>
+  <div class="wrap">
+    <header class="site-header">
+      <div class="id">
+        <a class="site-name" href="/">Chris Anthony</a>
+        {tagline && <span class="tagline">{tagline}</span>}
+      </div>
+      <nav class="nav" aria-label="Main">
+        <a href="/about/" aria-current={current === 'About' ? 'page' : undefined}>About</a>
+        {folders.map((f) => (
+          <a href={f.url} aria-current={current === f.name ? 'page' : undefined}>
+            {current === f.name && <span class="sq" aria-hidden="true" style={`background:${f.color}`} />}
+            {f.name}
+          </a>
+        ))}
+      </nav>
+    </header>
+    <slot />
+  </div>
+</body>
+</html>

@@ -1,0 +1,11 @@
+---
+// One timeline row: folder square, title (+ domain for link posts), date.
+import type { Post } from '../lib/site';
+interface Props { post: Post }
+const { post } = Astro.props;
+---
+<a class="row" href={post.url}>
+  <span class="sq" aria-label={post.folder.name} style={`background:${post.folder.color}`}></span>
+  <span class="title">{post.title}{post.domain && <> <span class="meta">{post.domain}</span></>}</span>
+  <span class="meta">{post.date}</span>
+</a>
