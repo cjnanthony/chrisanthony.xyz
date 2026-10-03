@@ -1,0 +1,13 @@
+{
+	"schemaVersion": "0.1.0",
+	"name": "Link post",
+	"behavior": "create",
+	"noteContentFormat": "[Why it's worth reading, crediting the author by name.]\n\n{{selection|blockquote}}\n",
+	"properties": [
+		{ "name": "url", "value": "{{url}}", "type": "text" },
+		{ "name": "author", "value": "{{author}}", "type": "text" }
+	],
+	"triggers": [],
+	"noteNameFormat": "{{title}}",
+	"path": "blog/Notes"
+}

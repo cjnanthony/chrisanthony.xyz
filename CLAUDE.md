@@ -85,7 +85,7 @@ blog/
 | `updated` | Written automatically by the Obsidian plugin "Update Time on Edit" on every save. Default sort and display date. |
 | `date` | Manual override of `updated`, for posts that should keep their place. |
 | `url` | Makes the note a link post (title links out to this URL). |
-| `author` | Optional credit shown on link posts. |
+| `author` | Optional credit shown on link posts. Text or a list (Obsidian often makes it a list); a list shows as "A, B". |
 | `pinned` | `true` (or a number for explicit order) pins the post on the homepage. |
 
 **Sort/display date** = `date` ?? `updated`. The displayed day is the first 10 characters of the raw frontmatter value (so `2026-09-30T23:30` shows as 2026-09-30 with no time-zone shifting). The tile banner's "today" is the build date in New York. Do not rely on file modification times: git doesn't preserve them, so every file would look modified at build time. If both properties are missing, fall back to the file's last git commit date. (Caveat: if Cloudflare clones the repo shallowly, every such file gets the same commit date. Notes from Obsidian always have `updated`, so this rarely matters.)

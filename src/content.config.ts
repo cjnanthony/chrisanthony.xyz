@@ -19,8 +19,14 @@ const posts = defineCollection({
   schema: z.object({
     updated: dateish,
     date: dateish,
-    url: z.string().url().optional(),
-    author: z.string().optional(),
+    // Lenient on purpose: a property typed differently in Obsidian shouldn't
+    // break every publish. `author` may be text or a list (Obsidian often
+    // treats it as a list); a list becomes "A, B".
+    url: z.string().optional(),
+    author: z
+      .union([z.string(), z.array(z.string())])
+      .transform((a) => (Array.isArray(a) ? a.join(', ') : a))
+      .optional(),
     pinned: z.union([z.boolean(), z.number()]).optional(),
   }),
 });
