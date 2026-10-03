@@ -31,7 +31,7 @@ npm run build      # production build into dist/
 npm run preview    # serve the production build locally
 ```
 
-Deploys happen automatically: Enveloppe pushes to GitHub, and Cloudflare builds and serves `dist/` on chrisanthony.xyz. Cloudflare setup: Workers with static assets only (no Worker code), configured in `wrangler.jsonc`; Workers Builds runs `npm run build` then `npx wrangler deploy`. Node 22 (`.node-version`; Astro 7 needs >= 22.12).
+Deploys happen automatically: Enveloppe pushes to GitHub, and Cloudflare builds and serves `dist/` on chrisanthony.xyz. Cloudflare setup: Workers with static assets only (no Worker code), configured in `wrangler.jsonc`; Workers Builds runs `npm run build` then `npx wrangler deploy`. Node 22 (`.node-version`; Astro 7 needs >= 22.12). Domains: `chrisanthony.xyz` and `www.chrisanthony.xyz` are Custom Domains on the Worker (DNS on Cloudflare since 2026-10-03, registrar Namecheap); a Cloudflare Redirect Rule ("Redirect from WWW to root", 301) sends www to the root. `chrisanthony-xyz.cjnanthony.workers.dev` stays on as a fallback.
 
 ## Repo layout
 
