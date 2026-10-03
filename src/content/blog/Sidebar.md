@@ -1,7 +1,8 @@
 ---
 elsewhere:
-  - { label: RSS,    url: /rss.xml }
-  - { label: Email,  url: "mailto:hello@chrisanthony.xyz" }
-  - { label: GitHub, url: "https://github.com/cjnanthony" }
+  - label: RSS
+    url: /rss.xml
+  - label: GitHub
+    url: https://github.com/cjnanthony
 ---
-I work on payments data at Rippling and write here about software, books, and walks.
+[One or two lines about you. This text is the blurb in the sidebar on the home and section pages.]
