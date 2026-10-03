@@ -11,6 +11,13 @@ const imageOnly = (n) =>
   n.children.some(isImg) && n.children.every((c) => isImg(c) || isBlank(c) || (c.type === 'element' && c.tagName === 'br'));
 
 const el = (tagName, properties, children) => ({ type: 'element', tagName, properties, children });
+
+// Obsidian embeds without a caption (![[photo.webp]]) arrive with the filename
+// as alt text, and ![[photo.webp|300]] with a width. Neither is a caption.
+const captionOf = (img) => {
+  const alt = String(img.properties.alt ?? '').trim();
+  return /\.(webp|png|jpe?g|gif|avif|svg|heic)$/i.test(alt) || /^\d+(x\d+)?$/.test(alt) ? '' : alt;
+};
 const zoom = (img) => el('a', { className: ['zoom'] }, [img]);
 
 export default function rehypeFigures() {
@@ -26,6 +33,7 @@ export default function rehypeFigures() {
         j++;
       }
       i = j - 1;
+      for (const img of imgs) img.properties.alt = captionOf(img);
       if (imgs.length === 1) {
         const alt = imgs[0].properties.alt;
         out.push(el('figure', {}, [zoom(imgs[0]), ...(alt ? [el('figcaption', {}, [{ type: 'text', value: alt }])] : [])]));

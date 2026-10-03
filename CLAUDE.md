@@ -215,4 +215,26 @@ Maps/GPX routes, trip stats, "via" links on link posts, the "I read" list in the
 - **Photos:** must arrive with EXIF/GPS stripped; check the Obsidian image settings if location data ever appears.
 - **Repo size:** photos are the only heavy content. Keep them WebP ≤2000px; avoid re-uploading the same image repeatedly.
 - **Enveloppe:** must exclude `blog/Drafts/`, convert unpublished links to plain text, auto-merge, and remove unpublished files.
+- **Links to private notes:** with "Share all files", Enveloppe can't tell which notes are unpublished, so a link from a post to a private note is uploaded as a normal Markdown link (e.g. `[000 HOME](../../../../000%20HOME.md)`). The site renders it as plain text, but **the private note's filename is visible in the public repo** (never its contents).
+- **Image captions:** an embed without a caption (`![[photo.webp]]`) gets the filename as alt text; `rehype-figures.mjs` drops filename and width-only alt text so they never show as captions. Use `![[photo.webp|Caption]]` for a caption.
+
+## Enveloppe settings (Obsidian plugin, v7.8.2)
+
+Verified with a Test mode run on 2026-10-03. Settings live in the vault at `.obsidian/plugins/obsidian-mkdocs-publisher/data.json`; the token is in `env` next to it.
+
+| Tab | Setting | Value |
+|---|---|---|
+| GitHub config | GitHub username / Repository name / Main branch | `cjnanthony` / `chrisanthony.xyz` / `main` |
+| | Automatically merge pull requests | on |
+| | GitHub token | fine-grained, only this repo: Contents + Pull requests read/write |
+| | Test mode | off for real publishing (on writes to `_enveloppe-test/` in the vault instead) |
+| File paths | File tree in repository | Obsidian Path |
+| | Root folder (the first one) | `src/content` (vault `blog/Notes/x.md` -> `src/content/blog/Notes/x.md`) |
+| | Auto clean up | on; excluded: `src/content.config.ts`; self-cleaning of attachments off |
+| Attachment & embeds | Transfer attachments | on; default folder `src/assets/blog`; force push off |
+| Content | Wikilinks to MDlinks, Internal links, Relative path, Unlink unshared files, keep display text | all on |
+| Plugin settings | Share all files | on |
+| | Excluded folders | `/^(?!blog\/)/` (everything outside `blog/`) and `blog/Drafts` |
+
+The excluded-folders regex is what keeps the rest of the vault private: a Test mode run uploaded only the `blog/` notes and their attachments. Re-run Test mode after changing any of these.
 - **New folders:** remind Chris to add them to `Site.md` so their color and nav position are locked.
