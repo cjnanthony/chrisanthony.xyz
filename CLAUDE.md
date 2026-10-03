@@ -50,7 +50,7 @@ design/mockup/           approved design (visual source of truth)
 
 URLs: `/{folder}/` and `/{folder}/{post}/`, both slugified from the folder and filename (e.g. `Notes/Small tools age well.md` -> `/notes/small-tools-age-well/`). Renaming a note changes its URL.
 
-Markdown runs on the unified (remark/rehype) processor via `@astrojs/markdown-remark`, not Astro 7's default Sätteri, because the two plugins above are remark/rehype plugins.
+Markdown runs on the unified (remark/rehype) processor (`markdown.processor: unified({...})` from `@astrojs/markdown-remark` in `astro.config.mjs`), not Astro 7's default Sätteri, because the two plugins above are remark/rehype plugins.
 
 ## How publishing works
 

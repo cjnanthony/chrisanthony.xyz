@@ -5,5 +5,9 @@
   "assets": {
     "directory": "./dist",
     "not_found_handling": "404-page"
-  }
+  },
+  // chrisanthony-xyz.cjnanthony.workers.dev stays on as a fallback address.
+  "workers_dev": true,
+  // No per-version preview links; every push to main just deploys.
+  "preview_urls": false
 }
