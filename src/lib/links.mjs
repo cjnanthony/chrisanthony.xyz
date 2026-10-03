@@ -5,7 +5,8 @@ import path from 'node:path';
 import { slug } from 'github-slugger';
 
 export const CONTENT_DIR = 'src/content/blog';
-export const EXCLUDED_FOLDERS = ['Drafts'];
+// Either capitalization, since Obsidian folder names are typed by hand.
+export const EXCLUDED_FOLDERS = ['Drafts', 'drafts'];
 
 export const folderUrl = (folder) => `/${slug(folder)}/`;
 export const postUrl = (folder, title) => `/${slug(folder)}/${slug(title)}/`;

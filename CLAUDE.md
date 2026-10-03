@@ -36,7 +36,7 @@ Deploys happen automatically: Enveloppe pushes to GitHub, and Cloudflare builds 
 ## Repo layout
 
 ```
-src/content/blog/        Enveloppe writes here; mirrors Obsidian's Blog/ (never hand-edit)
+src/content/blog/        Enveloppe writes here; mirrors Obsidian's blog/ (never hand-edit)
 src/assets/blog/         images uploaded by Enveloppe; notes link to them relatively
 src/content.config.ts    collections: `posts` (every */**/*.md except Drafts) and `site` (Site/Sidebar/About.md)
 src/lib/site.ts          all derived data: folders + colors, dates, pinned, backlinks
@@ -54,16 +54,16 @@ Markdown runs on the unified (remark/rehype) processor via `@astrojs/markdown-re
 
 ## How publishing works
 
-1. Chris writes in his Obsidian vault under `Blog/`.
-2. The Enveloppe plugin uploads everything in `Blog/` except `Blog/Drafts/` to this repo's content folder, converting `[[wikilinks]]` (links to unpublished notes become plain text) and uploading embedded images. It also removes files that were unpublished.
+1. Chris writes in his Obsidian vault under `blog/` (lowercase).
+2. The Enveloppe plugin uploads everything in `blog/` except `blog/Drafts/` to this repo's content folder, converting `[[wikilinks]]` (links to unpublished notes become plain text) and uploading embedded images. It also removes files that were unpublished.
 3. Cloudflare rebuilds on push (about a minute).
 
-Moving a note into a section folder publishes it; moving it to `Drafts/` (or out of `Blog/`) unpublishes it on the next upload. The repo is **public**: anything published stays in git history.
+Moving a note into a section folder publishes it; moving it to `Drafts/` (or out of `blog/`) unpublishes it on the next upload. The repo is **public**: anything published stays in git history.
 
 ## Content model
 
 ```
-Blog/
+blog/
   Site.md      site file: tagline, folder order + colors
   Sidebar.md   site file: sidebar blurb, Elsewhere links
   About.md     site file: bio, work/education, I read, colophon
@@ -74,7 +74,7 @@ Blog/
   Drafts/      never published
 ```
 
-- **Folders are sections.** Every folder under `Blog/` except `Drafts` is a section with its own nav item, color, and section page. Adding a folder must require zero code changes.
+- **Folders are sections.** Every folder under `blog/` except `Drafts` (either capitalization) is a section with its own nav item, color, and section page. Adding a folder must require zero code changes.
 - **Root-level notes are site files,** never posts. Only the three above are recognized.
 - **Post title = filename.** Slug derived from the filename.
 
@@ -214,5 +214,5 @@ Maps/GPX routes, trip stats, "via" links on link posts, the "I read" list in the
 - **Public repo:** unpublishing removes a post from the site but not from git history.
 - **Photos:** must arrive with EXIF/GPS stripped; check the Obsidian image settings if location data ever appears.
 - **Repo size:** photos are the only heavy content. Keep them WebP ≤2000px; avoid re-uploading the same image repeatedly.
-- **Enveloppe:** must exclude `Blog/Drafts/`, convert unpublished links to plain text, auto-merge, and remove unpublished files.
+- **Enveloppe:** must exclude `blog/Drafts/`, convert unpublished links to plain text, auto-merge, and remove unpublished files.
 - **New folders:** remind Chris to add them to `Site.md` so their color and nav position are locked.
