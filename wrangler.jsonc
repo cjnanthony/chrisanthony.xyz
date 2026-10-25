@@ -8,6 +8,7 @@
   },
   // chrisanthony-xyz.cjnanthony.workers.dev stays on as a fallback address.
   "workers_dev": true,
-  // No per-version preview links; every push to main just deploys.
-  "preview_urls": false
+  // Legacy per-version preview links stay disabled; branch previews are separate.
+  "preview_urls": false,
+  "previews": {}
 }
